@@ -1,6 +1,11 @@
 module Assignment07
 
 export normalizeDNA
+export composition
+export gc_content
+export complement
+export reverse_complement
+export parse_fasta
 
 # # uncomment the following line if you intend to use BioSequences types
 # using BioSequences
@@ -82,7 +87,28 @@ function reverse_complement(sequence)
 return revsequence
 end
 
-
+function parse_fasta(path)
+    header_list = []
+    seq_list = []
+    seq = ""
+    
+    for line in eachline(path)  
+        if startswith(line, ">")
+            if length(seq) > 0 
+                push!(seq_list, seq)
+            end
+            seq = ""
+            push!(header_list, fasta_header(line))
+        else 
+            seq = seq*line
+        end
+    end
+    push!(seq_list, seq)
+    
+    header_list = chop(header_list , head = 1, tail = 0)
+    seq_list = normalizeDNA(seq_list)
+    return header_list, seq_list
+end
 # Don't forget to export your functions!
 
 
