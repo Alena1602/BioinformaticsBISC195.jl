@@ -47,9 +47,41 @@ function gc_content(sequence)
     return (G + C)/length(sequence)
 end
 
+function complement(base)
+    complements = Dict("A" => "T",
+                       "T" => "A",
+                       "G" => "C",
+                       "C" => "G"
+                       "N" => "N")
+    
+    base = uppercase(string(base))
+    
+    !(base in keys(complements)) && error("Invalid base $base")
+    return complements[base]
+end
 
 
-# Your code here.
+function complement(sequence)
+    
+    sequence = normalizeDNA(sequence)
+    complseq = ""
+    
+        for base in sequence
+            return 
+            complseq = complseq * complement(base[n])
+        end
+
+return complseq
+end
+
+function reverse_complement(sequence)
+    
+    complseq = complement(sequence)
+    revsequence = reverse(complseq)
+
+return revsequence
+end
+
 
 # Don't forget to export your functions!
 
