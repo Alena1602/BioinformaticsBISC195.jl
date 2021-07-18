@@ -29,21 +29,23 @@ end
 function composition(sequence)
 sequence = normalizeDNA(sequence)
 DNA = Dict('A'=> 0, 'C'=> 0, 'G'=> 0, 'T'=> 0, 'N'=> 0)
-for key in sequence
-    if key =='A' 
-        DNA['A'] = 0
+    for key in sequence
+        if key =='A' 
+            DNA['A'] += 1
+        end
+        if key == 'C' 
+            DNA['C'] += 1
+        end  
+        if key == 'G' 
+            DNA['G'] += 1
+        end 
+        if key == 'T' 
+            DNA['T'] += 1
+        end
+        if key == 'N' 
+            DNA['N'] += 1
+        end
     end
-    if key == 'C' 
-        DNA['C'] = 0 
-    end  
-    if key == 'G' 
-        DNA['G'] = 0 
-    end 
-    if key == 'T' 
-        DNA['T'] = 0
-    end
-    if key == 'N' 
-        DNA['N'] = 0
 return DNA
 end
 
@@ -52,11 +54,11 @@ function gc_content(sequence)
     return (G + C)/length(sequence)
 end
 
-function complement(base)
+function complement(base::Char)
     complements = Dict("A" => "T",
                        "T" => "A",
                        "G" => "C",
-                       "C" => "G"
+                       "C" => "G",
                        "N" => "N")
     
     base = uppercase(string(base))
@@ -66,17 +68,16 @@ function complement(base)
 end
 
 
-function complement(sequence)
+function complement(sequence::AbstractString)
     
     sequence = normalizeDNA(sequence)
     complseq = ""
     
-        for base in sequence
-            return 
-            complseq = complseq * complement(base[n])
-        end
+    for base in sequence
+        complseq = complseq * complement(base)
+     end
 
-return complseq
+    return complseq
 end
 
 function reverse_complement(sequence)
@@ -105,8 +106,8 @@ function parse_fasta(path)
     end
     push!(seq_list, seq)
     
-    header_list = chop(header_list , head = 1, tail = 0)
-    seq_list = normalizeDNA(seq_list)
+    header_list = chop.(header_list , head = 1, tail = 0)
+    seq_list = normalizeDNA.(seq_list)
     return header_list, seq_list
 end
 # Don't forget to export your functions!
